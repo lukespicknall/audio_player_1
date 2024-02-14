@@ -6,8 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "watch": "webpack  --watch"
+    "watch": "webpack  --watch",
+    "deploy": "gh-pages -d dist"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukespicknall/audio_player_1.git"
+  },
+  "homepage": "https://github.com/lukespicknall/audio_player_1#readme",
   "author": "",
   "license": "ISC",
   "devDependencies": {
