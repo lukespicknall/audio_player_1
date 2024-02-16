@@ -6,7 +6,16 @@ const wavesurfer = WaveSurfer.create({
   waveColor: 'rgb(200, 0, 200)',
   progressColor: 'rgb(100, 0, 100)',
   url: '../src/audio/09_DadSingsKristofferson.mp3',
+  WaveSurferOptions: {
+    autoplay: false,
+  },
 });
+// const wavesurfer = WaveSurfer.create({
+//   container: "document.body",
+//   waveColor: "violet",
+//   progressColor: "purple",
+// });
+// wavesurfer.load("./audio/09_DadSingsKristofferson.mp3");
 
 wavesurfer.on('click', () => {
   wavesurfer.play();
