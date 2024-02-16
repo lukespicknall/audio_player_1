@@ -1,11 +1,13 @@
 import './style.css';
 import WaveSurfer from 'wavesurfer.js';
+import DadSingsKristofferson from "./audio/09_DadSingsKristofferson.mp3";
+
 
 const wavesurfer = WaveSurfer.create({
   container: document.body,
   waveColor: 'rgb(200, 0, 200)',
   progressColor: 'rgb(100, 0, 100)',
-  url: '../src/audio/09_DadSingsKristofferson.mp3',
+//   url: './audio/09_DadSingsKristofferson.mp3',
   WaveSurferOptions: {
     autoplay: false,
   },
@@ -15,7 +17,7 @@ const wavesurfer = WaveSurfer.create({
 //   waveColor: "violet",
 //   progressColor: "purple",
 // });
-// wavesurfer.load("./audio/09_DadSingsKristofferson.mp3");
+wavesurfer.load(DadSingsKristofferson);
 
 wavesurfer.on('click', () => {
   wavesurfer.play();
