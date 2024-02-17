@@ -9,6 +9,8 @@ import AdviceToHisKids from './audio/06_AdviceToHisKids.mp3';
 import MessageToTheFamily from './audio/07_MessageToTheFamily.mp3';
 import MessageToMom from './audio/08_MessageToMom.mp3';
 import DadSingsKristofferson from './audio/09_DadSingsKristofferson.mp3';
+import Play from './images/play.svg';
+import Pause from './images/pause.svg';
 
 // puts audio files in an array
 const tracks = [
@@ -38,22 +40,58 @@ for (let i = 0; i < tracks.length; i += 1) {
   // create wavesurfer instance, append to the above track div, options
   const wavesurfer = WaveSurfer.create({
     container: `#track${[i]}`,
-    waveColor: 'rgb(200, 0, 200)',
-    progressColor: 'rgb(100, 0, 100)',
+    waveColor: '#8A9A5B',
+    progressColor: '#4B5320',
+    height: 80,
     barWidth: 0,
     barRadius: 0,
+    cursorWidth: 2,
+    dragToSeek: true,
   });
 
   // load track[i] into wavesurfer instance
   wavesurfer.load(tracks[i]);
+  //   const duration = wavesurfer.getDuration(tracks[i]);
+  //   const current = wavesurfer.getCurrentTime();
+  //   console.log(duration);
+  //   track.appendChild(duration);
+  //   track.appendChild(current);
 
   // create play button
-  const play = document.createElement('button');
-  play.textContent = 'Play/Plause';
+  const playBtn = document.createElement('button');
+  const play = new Image();
+  play.src = Play;
+  play.style.height = '30px';
+  play.style.width = '30px';
+
+  // creat pause button
+  const pause = new Image();
+  pause.src = Pause;
+  pause.style.height = '30px';
+  pause.style.width = '30px';
+  //   playBtn.style.padding = '0 0 0 -10px'
+
+  // set play button as default display on load
+  playBtn.appendChild(play);
+
+  // some style from js
+  playBtn.style.margin = '10px 0 35px 0';
+  playBtn.style.border = 'none';
+  playBtn.style.backgroundColor = 'white';
+
   // on click, it plays or pauses the wavesurfer instance
-  play.onclick = () => {
+  playBtn.onclick = () => {
     wavesurfer.playPause();
   };
+
+  // when paused, show the play img
+  wavesurfer.on('pause', () => {
+    playBtn.replaceChild(play, pause);
+  });
+  // when playing, show, the pause img
+  wavesurfer.on('play', () => {
+    playBtn.replaceChild(pause, play);
+  });
   // append to track
-  track.appendChild(play);
+  track.appendChild(playBtn);
 }
