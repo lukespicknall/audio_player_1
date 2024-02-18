@@ -32,8 +32,8 @@ const createPlayer = (
     // create wavesurfer instance with options applied, append to the above track div
     const wavesurfer = WaveSurfer.create({
       container: `#track${[i]}`,
-      waveColor: "#c4c3c4",
-      progressColor: "rgb(152, 77, 196)",
+      waveColor: '#c4c3c4',
+      progressColor: 'rgb(152, 77, 196)',
       height: 85,
       barWidth: 0,
       barRadius: 0,
