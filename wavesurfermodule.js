@@ -1,3 +1,12 @@
+// this module creates wavesurfer audio player instaces by looping over arrays
+// as params, the function takes an array of audio files, an array of track titles,
+// a target parent DOM element the container full of players will be appened to,
+// and images for the play and pause button.
+//
+// js stlyle is included at end for a default load.
+// each DOM element created gets a css selector so
+// it is expected that the js style will be commented out and custom css applied
+
 import WaveSurfer from 'wavesurfer.js';
 
 const createPlayer = (
@@ -8,25 +17,24 @@ const createPlayer = (
   pauseImg,
 ) => {
   for (let i = 0; i < audioArray.length; i += 1) {
-    // create a track div w/ id of track[i], add class
+    // create a track div w/ id of track[i], add class, append to targetParent
     const track = document.createElement('div');
     track.id = `track${[i]}`;
     track.classList.add('track');
     targetParent.appendChild(track);
 
-    // create track title in DOM, assign it from trackTitles[i]
+    // create accompanying track title in DOM, assign it from trackTitles[i]
     const trackTitle = document.createElement('div');
     trackTitle.classList.add('track-title');
     trackTitle.textContent = trackTitles[i];
-    trackTitle.style.fontSize = '20px';
     track.appendChild(trackTitle);
 
-    // create wavesurfer instance, append to the above track div, options
+    // create wavesurfer instance with options applied, append to the above track div
     const wavesurfer = WaveSurfer.create({
       container: `#track${[i]}`,
-      waveColor: '#c3c4c3',
-      progressColor: '#8A9A5B',
-      height: 80,
+      waveColor: "rgb(198, 207, 198)",
+      progressColor: "#0b6623",
+      height: 85,
       barWidth: 0,
       barRadius: 0,
       cursorWidth: 0,
@@ -39,46 +47,26 @@ const createPlayer = (
     // optionsDisplay container for play/pause and timeDisplay
     const optionsDisplay = document.createElement('div');
     optionsDisplay.classList.add('options-display');
-    optionsDisplay.style.display = 'flex';
-    optionsDisplay.style.gap = '20px';
-    optionsDisplay.style.margin = '0 0 35px 0';
-    optionsDisplay.style.alignItems = 'center';
     track.appendChild(optionsDisplay);
 
     // create play/pause button
     const playBtn = document.createElement('button');
-    playBtn.style.display = 'flex';
-    playBtn.style.alignItems = 'center';
-    playBtn.style.borderRadius = '25px';
+    playBtn.classList.add('play-btn');
 
-    playBtn.addEventListener('mouseenter', () => {
-      playBtn.style.backgroundColor = '#c4c3c4';
-    });
-
-    playBtn.addEventListener('mouseleave', () => {
-      playBtn.style.backgroundColor = 'white';
-    });
-
+    // create play img
     const play = new Image();
     play.src = playImg;
-    play.style.height = '30px';
-    play.style.width = '30px';
+    play.classList.add('play-img');
 
     // create pause img
     const pause = new Image();
     pause.src = pauseImg;
-    pause.style.height = '30px';
-    pause.style.width = '30px';
-    //   playBtn.style.padding = '0 0 0 -10px'
+    play.classList.add('pause-img');
 
     // set play button as default display on load
     playBtn.appendChild(play);
 
-    // some style from js
-    playBtn.style.border = 'none';
-    playBtn.style.backgroundColor = 'white';
-
-    // on click, it plays or pauses the wavesurfer instance
+    // on click, playBtn plays or pauses the wavesurfer instance
     playBtn.onclick = () => {
       wavesurfer.playPause();
     };
@@ -87,18 +75,18 @@ const createPlayer = (
     wavesurfer.on('pause', () => {
       playBtn.replaceChild(play, pause);
     });
+
     // when playing, show, the pause img
     wavesurfer.on('play', () => {
       playBtn.replaceChild(pause, play);
     });
-    // append to track
+
+    // append optionsdisplay to track
     optionsDisplay.appendChild(playBtn);
 
-    // div for timeDisplay, currentTime and durationTime and class assignment
+    // timeDisplay container, currentTime container and durationTime container and class assignments
     const timeDisplay = document.createElement('div');
     timeDisplay.classList.add('time-display');
-    timeDisplay.style.display = 'flex';
-    timeDisplay.style.gap = '5px';
 
     const currentDisplay = document.createElement('div');
     currentDisplay.classList.add('current-display');
@@ -108,35 +96,68 @@ const createPlayer = (
 
     // divider to sperate displays and its text
     const divider = document.createElement('div');
+    divider.classList.add('divider');
     divider.textContent = '/';
 
-    // takes time in miliseconds and formats to a 60base min:sic display
+    // takes time in miliseconds and formats to a 60base mm:ss display
     const formatTime = (time) => [
       Math.floor((time % 3600) / 60), // minutes
       `00${Math.floor(time % 60)}`.slice(-2), // seconds
     ].join(':');
 
-    // set initial current tim to 00:00
+    // set initial current time to 00:00
     currentDisplay.textContent = '0:00';
-    // whenever track tim updates, update current time display
+    // whenever track time updates, update current time display
     wavesurfer.on('timeupdate', () => {
       currentDisplay.textContent = formatTime(wavesurfer.getCurrentTime());
     });
 
-    // set intial duration time to 00:00 until ready
+    // set intial duration time to 00:00 until ready - just to fill the space
     durationDisplay.textContent = '0:00';
-    // when track is decoded and ready to play, display duration
+    // when track is decoded and ready to play, display track duration
     wavesurfer.on('ready', () => {
       durationDisplay.textContent = formatTime(wavesurfer.getDuration());
     });
 
-    // append to timeDisplay
+    // append time elements to timeDisplay
     timeDisplay.appendChild(currentDisplay);
     timeDisplay.appendChild(divider);
     timeDisplay.appendChild(durationDisplay);
 
-    // append option to track
+    // append timeDisplay to optionsDisplay
     optionsDisplay.appendChild(timeDisplay);
+
+    // js style for default that can be commented
+    // DOM elements can be grabbed by assigned css selector
+    trackTitle.style.fontSize = '20px';
+
+    optionsDisplay.style.display = 'flex';
+    optionsDisplay.style.gap = '20px';
+    optionsDisplay.style.margin = '0 0 40px 0';
+    optionsDisplay.style.alignItems = 'center';
+
+    playBtn.style.display = 'flex';
+    playBtn.style.alignItems = 'center';
+    playBtn.style.borderRadius = '25px';
+    playBtn.style.border = 'none';
+    playBtn.style.backgroundColor = 'white';
+
+    play.style.height = '30px';
+    play.style.width = '30px';
+    pause.style.height = '30px';
+    pause.style.width = '30px';
+
+    timeDisplay.style.display = 'flex';
+    timeDisplay.style.gap = '5px';
+
+    // playBtn can be grabbed by class and have ::hover applied for better results
+    playBtn.addEventListener('mouseenter', () => {
+      playBtn.style.backgroundColor = '#c4c3c4';
+    });
+
+    playBtn.addEventListener('mouseleave', () => {
+      playBtn.style.backgroundColor = 'white';
+    });
   }
 };
 
