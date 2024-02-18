@@ -1,5 +1,5 @@
 import './style.css';
-import createPlayer from '../wavesurfermodule';
+import createPlayer from './wavesurfermodule';
 import EarlyLife from './audio/01_EarlyLife.mp3';
 import MomKidsCarpentry from './audio/02_MomKidsCarpentry.mp3';
 import Nature from './audio/03_Nature.mp3';
